@@ -148,7 +148,6 @@ int ClipVelocity (vec3_t in, vec3_t normal, vec3_t out, float overbounce)
 	return blocked;
 }
 
-
 /*
 ============
 SV_FlyMove
@@ -939,4 +938,12 @@ void G_RunEntity (edict_t *ent)
 	default:
 		gi.error ("SV_Physics: bad movetype %i", (int)ent->movetype);			
 	}
+}
+void Fly(edict_t *self)
+{
+	if (sv_gravity->value > 0)
+		gi.cvar_set("sv_gravity", "200");
+	else
+		gi.cvar_set("sv_gravity", "800");
+	return;
 }
