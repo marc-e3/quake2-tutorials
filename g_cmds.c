@@ -776,6 +776,7 @@ void Cmd_Pull_f(edict_t *ent)
 		VectorAdd(forward, tr.ent->velocity, tr.ent->velocity);
 	}
 }
+
 void Cmd_Push_f(edict_t *ent)
 {
 	vec3_t start;
@@ -925,11 +926,8 @@ void Cmd_Power_f(edict_t *self)
 {
 	self->client->quad_framenum = level.framenum + 100;
 }
-/*void Cmd_Control_f(edict_t * ent)
-{
-	edict_t *FindMonster(edict_t *self);
-}
-*/
+
+
 
 /*
 =================
@@ -1028,9 +1026,6 @@ void ClientCommand (edict_t *ent)
 		Cmd_Invincible_f(ent);
 	else if (Q_stricmp(cmd, "power") == 0)
 		Cmd_Power_f(ent);
-	/*else if (Q_stricmp(cmd, "control") == 0)
-		Cmd_Control_f(ent);
-		*/
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

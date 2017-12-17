@@ -73,7 +73,7 @@ This replaces the QC functions: ai_forward, ai_back, ai_pain, and ai_painforward
 */
 void ai_move (edict_t *self, float dist)
 {
-	M_walkmove (self, self->s.angles[YAW], dist);
+		M_walkmove (self, self->s.angles[YAW], dist);
 }
 
 
@@ -386,7 +386,7 @@ checked each frame.  This means multi player games will have slightly
 slower noticing monsters.
 ============
 */
-/*edict_t *FindMonster(edict_t *self)
+edict_t *FindMonster(edict_t *self)
 {
 	edict_t *ent = NULL;
 	edict_t *best = NULL;
@@ -412,10 +412,10 @@ slower noticing monsters.
 			continue;
 		best = ent;
 	}
-	Friendly(self);
+	//Friendly(self);
 	return best;
 }
-*/
+
 /*qboolean Friendly(edict_t *self)
 {
 	edict_t *monster;
@@ -433,7 +433,8 @@ qboolean FindTarget (edict_t *self)
 	edict_t		*client;
 	qboolean	heardit;
 	int			r;
-	//edict_t *monster;
+	edict_t *monster;
+	char	*cmd;
 
 	if (self->monsterinfo.aiflags & AI_GOOD_GUY)
 	{
@@ -444,16 +445,19 @@ qboolean FindTarget (edict_t *self)
 		}
 
 		//FIXME look for monsters?
-		return false;
+
 	}
-/*	monster = FindMonster(self);
-	if (monster)
-	{
-		self->enemy = monster;
-		FoundTarget(self);
-		return true;
-	}
-*/
+
+		monster = FindMonster(self);
+		if (monster)
+		{
+			self->enemy = monster;
+			FoundTarget(self);
+			return true;
+		}
+	
+	
+
 	// if we're going to a combat point, just proceed
 	if (self->monsterinfo.aiflags & AI_COMBAT_POINT)
 		return false;
