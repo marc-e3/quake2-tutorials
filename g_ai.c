@@ -3,6 +3,7 @@
 #include "g_local.h"
 
 qboolean FindTarget (edict_t *self);
+
 extern cvar_t	*maxclients;
 
 qboolean ai_checkattack (edict_t *self, float dist);
@@ -385,11 +386,54 @@ checked each frame.  This means multi player games will have slightly
 slower noticing monsters.
 ============
 */
+/*edict_t *FindMonster(edict_t *self)
+{
+	edict_t *ent = NULL;
+	edict_t *best = NULL;
+
+	while ((ent = findradius(ent, self->s.origin, 1024)) != NULL)
+	{
+		if (ent == self)
+			continue;
+		if (!(ent->svflags & SVF_MONSTER))
+			continue;
+		if (!ent->health)
+			continue;
+		if (ent->health < 1)
+			continue;
+		if (!visible(self, ent))
+			continue;
+		if (!best)
+		{
+			best = ent;
+			continue;
+		}
+		if (ent->max_health <= best->max_health)
+			continue;
+		best = ent;
+	}
+	Friendly(self);
+	return best;
+}
+*/
+/*qboolean Friendly(edict_t *self)
+{
+	edict_t *monster;
+	monster = FindMonster(self);
+	if (monster)
+	{
+		self->enemy = monster;
+		FoundTarget(self);
+		return true;
+	}
+}
+*/
 qboolean FindTarget (edict_t *self)
 {
 	edict_t		*client;
 	qboolean	heardit;
 	int			r;
+	//edict_t *monster;
 
 	if (self->monsterinfo.aiflags & AI_GOOD_GUY)
 	{
@@ -402,7 +446,14 @@ qboolean FindTarget (edict_t *self)
 		//FIXME look for monsters?
 		return false;
 	}
-
+/*	monster = FindMonster(self);
+	if (monster)
+	{
+		self->enemy = monster;
+		FoundTarget(self);
+		return true;
+	}
+*/
 	// if we're going to a combat point, just proceed
 	if (self->monsterinfo.aiflags & AI_COMBAT_POINT)
 		return false;

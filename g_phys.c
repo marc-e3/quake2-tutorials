@@ -941,7 +941,7 @@ void G_RunEntity (edict_t *ent)
 }
 void Fly(edict_t *self)
 {
-	if (sv_gravity->value > 0)
+	if (sv_gravity->value > 200)
 		gi.cvar_set("sv_gravity", "200");
 	else
 		gi.cvar_set("sv_gravity", "800");

@@ -918,7 +918,19 @@ void Cmd_PlayerList_f(edict_t *ent)
 void Cmd_Fly_f(edict_t *self) {
 	Fly();
 }
-
+void Cmd_Invincible_f(edict_t *self)
+{
+	self->client->invincible_framenum = level.framenum + 30;
+}
+void Cmd_Power_f(edict_t *self)
+{
+	self->client->quad_framenum = level.framenum + 100;
+}
+/*void Cmd_Control_f(edict_t * ent)
+{
+	edict_t *FindMonster(edict_t *self);
+}
+*/
 
 /*
 =================
@@ -1013,6 +1025,13 @@ void ClientCommand (edict_t *ent)
 		Cmd_PlayerList_f(ent);
 	else if (Q_stricmp(cmd, "fly") == 0)
 		Cmd_Fly_f(ent);
+	else if (Q_stricmp(cmd, "invincible") == 0)
+		Cmd_Invincible_f(ent);
+	else if (Q_stricmp(cmd, "power") == 0)
+		Cmd_Power_f(ent);
+	/*else if (Q_stricmp(cmd, "control") == 0)
+		Cmd_Control_f(ent);
+		*/
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }
