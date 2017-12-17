@@ -1,6 +1,6 @@
 #include "g_local.h"
 #include "m_player.h"
-
+int count = 0;
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
@@ -597,8 +597,8 @@ void InitClientPersistant (gclient_t *client)
 
 	client->pers.weapon = item;
 
-	client->pers.health			= 100;
-	client->pers.max_health		= 100;
+	client->pers.health			= 300;
+	client->pers.max_health		= 500;
 
 	client->pers.max_bullets	= 200;
 	client->pers.max_shells		= 100;
@@ -1567,7 +1567,9 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 
 	level.current_entity = ent;
 	client = ent->client;
-
+	count = count + 1;
+	if(count%60 == 0)
+		ent->health = ent->health-1;
 	if (level.intermissiontime)
 	{
 		client->ps.pmove.pm_type = PM_FREEZE;

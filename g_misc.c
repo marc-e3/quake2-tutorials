@@ -122,6 +122,7 @@ void ThrowGib (edict_t *self, char *gibname, int damage, int type)
 	float	vscale;
 
 	gib = G_Spawn();
+	self->health = self->health + 30;
 
 	VectorScale (self->size, 0.5, size);
 	VectorAdd (self->absmin, size, origin);

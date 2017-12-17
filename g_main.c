@@ -363,10 +363,14 @@ void G_RunFrame (void)
 {
 	int		i;
 	edict_t	*ent;
+	edict_t *self;
+	int waterlevel;
 
 	level.framenum++;
 	level.time = level.framenum*FRAMETIME;
 
+	if(level.framenum%20==0)
+		T_Damage(self, world, world, vec3_origin, self->s.origin, vec3_origin, 1 * waterlevel, 0, 0, MOD_SLIME);
 	// choose a client for monsters to target this frame
 	AI_SetSightClient ();
 

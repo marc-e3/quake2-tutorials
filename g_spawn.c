@@ -291,7 +291,6 @@ void ED_CallSpawn (edict_t *ent)
 	}
 	gi.dprintf ("%s doesn't have a spawn function\n", ent->classname);
 }
-
 /*
 =============
 ED_NewString
