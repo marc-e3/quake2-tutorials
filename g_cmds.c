@@ -1,6 +1,7 @@
 #include "g_local.h"
 #include "m_player.h"
 
+extern int lust;
 char *ClientTeam (edict_t *ent)
 {
 	char		*p;
@@ -764,17 +765,21 @@ void Cmd_Pull_f(edict_t *ent)
 	vec3_t forward;
 	vec3_t end;
 	trace_t tr;
-
-	VectorCopy(ent->s.origin, start);
-	start[2] += ent->viewheight;
-	AngleVectors(ent->client->v_angle, forward, NULL, NULL);
-	VectorMA(start, 8192, forward, end);
-	tr = gi.trace(start, NULL, NULL, end, ent, MASK_SHOT);
-	if (tr.ent && ((tr.ent->svflags & SVF_MONSTER) || (tr.ent->client)))
+	if (lust != 0)
 	{
-		VectorScale(forward, -5000, forward);
-		VectorAdd(forward, tr.ent->velocity, tr.ent->velocity);
+		lust = lust - 1;
+		VectorCopy(ent->s.origin, start);
+		start[2] += ent->viewheight;
+		AngleVectors(ent->client->v_angle, forward, NULL, NULL);
+		VectorMA(start, 8192, forward, end);
+		tr = gi.trace(start, NULL, NULL, end, ent, MASK_SHOT);
+		if (tr.ent && ((tr.ent->svflags & SVF_MONSTER) || (tr.ent->client)))
+		{
+			VectorScale(forward, -5000, forward);
+			VectorAdd(forward, tr.ent->velocity, tr.ent->velocity);
+		}
 	}
+
 }
 
 void Cmd_Push_f(edict_t *ent)
@@ -783,17 +788,21 @@ void Cmd_Push_f(edict_t *ent)
 	vec3_t forward;
 	vec3_t end;
 	trace_t tr;
-
-	VectorCopy(ent->s.origin, start);
-	start[2] += ent->viewheight;
-	AngleVectors(ent->client->v_angle, forward, NULL, NULL);
-	VectorMA(start, 8192, forward, end);
-	tr = gi.trace(start, NULL, NULL, end, ent, MASK_SHOT);
-	if (tr.ent && ((tr.ent->svflags & SVF_MONSTER) || (tr.ent->client)))
+	if (lust != 0)
 	{
-		VectorScale(forward, 5000, forward);
-		VectorAdd(forward, tr.ent->velocity, tr.ent->velocity);
+		lust = lust - 1;
+		VectorCopy(ent->s.origin, start);
+		start[2] += ent->viewheight;
+		AngleVectors(ent->client->v_angle, forward, NULL, NULL);
+		VectorMA(start, 8192, forward, end);
+		tr = gi.trace(start, NULL, NULL, end, ent, MASK_SHOT);
+		if (tr.ent && ((tr.ent->svflags & SVF_MONSTER) || (tr.ent->client)))
+		{
+			VectorScale(forward, 5000, forward);
+			VectorAdd(forward, tr.ent->velocity, tr.ent->velocity);
+		}
 	}
+
 }
 
 /*
@@ -916,15 +925,29 @@ void Cmd_PlayerList_f(edict_t *ent)
 	gi.cprintf(ent, PRINT_HIGH, "%s", text);
 }
 void Cmd_Fly_f(edict_t *self) {
+	if (lust != 0)
+	{
 	Fly();
+	lust = lust - 1;
+	}
+
 }
 void Cmd_Invincible_f(edict_t *self)
 {
-	self->client->invincible_framenum = level.framenum + 30;
+	if (lust != 0)
+	{
+		self->client->invincible_framenum = level.framenum + 30;
+		lust = lust - 1;
+	}
+
 }
 void Cmd_Power_f(edict_t *self)
 {
+	if (lust != 0)
+	{
 	self->client->quad_framenum = level.framenum + 100;
+	lust = lust - 1;
+	}
 }
 
 

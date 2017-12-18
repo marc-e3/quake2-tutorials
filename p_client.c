@@ -1,6 +1,7 @@
 #include "g_local.h"
 #include "m_player.h"
 int count = 0;
+int lust = 0;
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
@@ -1563,13 +1564,15 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	gclient_t	*client;
 	edict_t	*other;
 	int		i, j;
-	pmove_t	pm;
+	pmove_t	pm;		
 
 	level.current_entity = ent;
 	client = ent->client;
 	count = count + 1;
 	if(count%60 == 0)
 		ent->health = ent->health-1;
+	gi.centerprintf(ent, "Lust: %i", lust);
+
 	if (level.intermissiontime)
 	{
 		client->ps.pmove.pm_type = PM_FREEZE;

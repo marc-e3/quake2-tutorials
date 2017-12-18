@@ -454,9 +454,7 @@ qboolean FindTarget (edict_t *self)
 			self->enemy = monster;
 			FoundTarget(self);
 			return true;
-		}
-	
-	
+		}	
 
 	// if we're going to a combat point, just proceed
 	if (self->monsterinfo.aiflags & AI_COMBAT_POINT)

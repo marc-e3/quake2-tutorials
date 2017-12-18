@@ -1,8 +1,7 @@
 // g_misc.c
 
 #include "g_local.h"
-
-
+extern int lust;
 /*QUAKED func_group (0 0 0) ?
 Used to group brushes together just for editor convenience.
 */
@@ -112,8 +111,12 @@ void gib_die (edict_t *self, edict_t *inflictor, edict_t *attacker, int damage, 
 {
 	G_FreeEdict (self);
 }
-
-void ThrowGib (edict_t *self, char *gibname, int damage, int type)
+void Eat(edict_t *self)
+{
+	if (lust < 3)
+		lust++;
+}
+void ThrowGib(edict_t *self, char *gibname, int damage, int type)
 {
 	edict_t *gib;
 	vec3_t	vd;
@@ -122,11 +125,10 @@ void ThrowGib (edict_t *self, char *gibname, int damage, int type)
 	float	vscale;
 
 	self->health = self->health + 20;
+	
 	for (int i = 0; i <= 3;i++) 
 	{
 		gib = G_Spawn();
-
-
 		VectorScale(self->size, 0.5, size);
 		VectorAdd(self->absmin, size, origin);
 		gib->s.origin[0] = origin[0] + crandom() * size[0];
@@ -171,6 +173,7 @@ void ThrowHead (edict_t *self, char *gibname, int damage, int type)
 	vec3_t	vd;
 	float	vscale;
 
+	Eat(self);
 	self->s.skinnum = 0;
 	self->s.frame = 0;
 	VectorClear (self->mins);
