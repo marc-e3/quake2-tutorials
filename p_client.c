@@ -1560,6 +1560,7 @@ This will be called once for each client frame, which will
 usually be a couple times for each server frame.
 ==============
 */
+
 void ClientThink (edict_t *ent, usercmd_t *ucmd)
 {
 	gclient_t	*client;
@@ -1572,7 +1573,8 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	count = count + 1;
 	if(count%60 == 0)
 		ent->health = ent->health-1;
-	gi.centerprintf(ent, "Lust: %i", lust);
+	if(count%1000 == 0)
+		gi.centerprintf(ent, "Lust: %i", lust);
 
 
 	if (level.intermissiontime)

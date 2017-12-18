@@ -950,7 +950,7 @@ void Cmd_Power_f(edict_t *self)
 	Sacrifice(self);
 	}
 }
-qboolean Cmd_Control_f(edict_t *ent)
+/*qboolean Cmd_Control_f(edict_t *ent)
 {
 	if (pressed == false)
 	{
@@ -968,7 +968,7 @@ qboolean Cmd_Control_f(edict_t *ent)
 		}
 	}
 
-}
+}*/
 
 
 
@@ -1072,6 +1072,7 @@ void ClientCommand (edict_t *ent)
 	else if (Q_stricmp(cmd, "control") == 0)
 	{
 		pressed = true;
+		gi.bprintf(PRINT_CHAT, "Button has been pressed\n");
 		if(pressed == true)
 			Sacrifice(ent);
 	}
