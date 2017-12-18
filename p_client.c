@@ -2,6 +2,7 @@
 #include "m_player.h"
 int count = 0;
 int lust = 0;
+extern pressed;
 void ClientUserinfoChanged (edict_t *ent, char *userinfo);
 
 void SP_misc_teleporter_dest (edict_t *ent);
@@ -1572,6 +1573,7 @@ void ClientThink (edict_t *ent, usercmd_t *ucmd)
 	if(count%60 == 0)
 		ent->health = ent->health-1;
 	gi.centerprintf(ent, "Lust: %i", lust);
+
 
 	if (level.intermissiontime)
 	{

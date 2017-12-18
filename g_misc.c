@@ -116,6 +116,11 @@ void Eat(edict_t *self)
 	if (lust < 3)
 		lust++;
 }
+void Sacrifice(edict_t *self)
+{
+	if(lust > 0)
+		lust = lust - 1;
+}
 void ThrowGib(edict_t *self, char *gibname, int damage, int type)
 {
 	edict_t *gib;
@@ -173,7 +178,6 @@ void ThrowHead (edict_t *self, char *gibname, int damage, int type)
 	vec3_t	vd;
 	float	vscale;
 
-	Eat(self);
 	self->s.skinnum = 0;
 	self->s.frame = 0;
 	VectorClear (self->mins);
@@ -205,8 +209,9 @@ void ThrowHead (edict_t *self, char *gibname, int damage, int type)
 	VelocityForDamage (damage, vd);
 	VectorMA (self->velocity, vscale, vd, self->velocity);
 	ClipGibVelocity (self);
-
 	self->avelocity[YAW] = crandom()*600;
+
+	Eat(self);
 
 	self->think = G_FreeEdict;
 	self->nextthink = level.time + 10 + random()*10;

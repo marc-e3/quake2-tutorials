@@ -2,6 +2,7 @@
 #include "m_player.h"
 
 extern int lust;
+qboolean pressed = false;
 char *ClientTeam (edict_t *ent)
 {
 	char		*p;
@@ -767,7 +768,7 @@ void Cmd_Pull_f(edict_t *ent)
 	trace_t tr;
 	if (lust != 0)
 	{
-		lust = lust - 1;
+		Sacrifice(ent);
 		VectorCopy(ent->s.origin, start);
 		start[2] += ent->viewheight;
 		AngleVectors(ent->client->v_angle, forward, NULL, NULL);
@@ -790,7 +791,7 @@ void Cmd_Push_f(edict_t *ent)
 	trace_t tr;
 	if (lust != 0)
 	{
-		lust = lust - 1;
+		Sacrifice(ent);
 		VectorCopy(ent->s.origin, start);
 		start[2] += ent->viewheight;
 		AngleVectors(ent->client->v_angle, forward, NULL, NULL);
@@ -928,7 +929,7 @@ void Cmd_Fly_f(edict_t *self) {
 	if (lust != 0)
 	{
 	Fly();
-	lust = lust - 1;
+	Sacrifice(self);
 	}
 
 }
@@ -937,7 +938,7 @@ void Cmd_Invincible_f(edict_t *self)
 	if (lust != 0)
 	{
 		self->client->invincible_framenum = level.framenum + 30;
-		lust = lust - 1;
+		Sacrifice(self);
 	}
 
 }
@@ -946,8 +947,27 @@ void Cmd_Power_f(edict_t *self)
 	if (lust != 0)
 	{
 	self->client->quad_framenum = level.framenum + 100;
-	lust = lust - 1;
+	Sacrifice(self);
 	}
+}
+qboolean Cmd_Control_f(edict_t *ent)
+{
+	if (pressed == false)
+	{
+
+	}
+	else 
+	{
+		edict_t *monster;
+		monster = FindMonster(ent);
+		if (monster)
+		{
+			ent->enemy = monster;
+			FoundTarget(ent);
+			return true;
+		}
+	}
+
 }
 
 
@@ -1049,6 +1069,12 @@ void ClientCommand (edict_t *ent)
 		Cmd_Invincible_f(ent);
 	else if (Q_stricmp(cmd, "power") == 0)
 		Cmd_Power_f(ent);
+	else if (Q_stricmp(cmd, "control") == 0)
+	{
+		pressed = true;
+		if(pressed == true)
+			Sacrifice(ent);
+	}
 	else	// anything that doesn't match a command will be a chat
 		Cmd_Say_f (ent, false, true);
 }

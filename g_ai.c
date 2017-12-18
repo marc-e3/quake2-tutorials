@@ -3,9 +3,9 @@
 #include "g_local.h"
 
 qboolean FindTarget (edict_t *self);
-
+extern pressed;
 extern cvar_t	*maxclients;
-
+int counter;
 qboolean ai_checkattack (edict_t *self, float dist);
 
 qboolean	enemy_vis;
@@ -391,7 +391,7 @@ edict_t *FindMonster(edict_t *self)
 	edict_t *ent = NULL;
 	edict_t *best = NULL;
 
-	while ((ent = findradius(ent, self->s.origin, 1024)) != NULL)
+	while ((ent = findradius(ent, self->s.origin, 8000)) != NULL)
 	{
 		if (ent == self)
 			continue;
@@ -412,28 +412,18 @@ edict_t *FindMonster(edict_t *self)
 			continue;
 		best = ent;
 	}
-	//Friendly(self);
 	return best;
 }
 
-/*qboolean Friendly(edict_t *self)
+void ResetCounter()
 {
-	edict_t *monster;
-	monster = FindMonster(self);
-	if (monster)
-	{
-		self->enemy = monster;
-		FoundTarget(self);
-		return true;
-	}
+	counter = 0;
 }
-*/
 qboolean FindTarget (edict_t *self)
 {
 	edict_t		*client;
 	qboolean	heardit;
 	int			r;
-	edict_t *monster;
 	char	*cmd;
 
 	if (self->monsterinfo.aiflags & AI_GOOD_GUY)
@@ -447,14 +437,19 @@ qboolean FindTarget (edict_t *self)
 		//FIXME look for monsters?
 
 	}
+	if (pressed == true)
+	{
+		counter = counter + 1;
+		Cmd_Control_f(self);
+	}
+	if (counter%100 == 0 && pressed == true)
+	{
 
-		monster = FindMonster(self);
-		if (monster)
-		{
-			self->enemy = monster;
-			FoundTarget(self);
-			return true;
-		}	
+		pressed = false;
+		ResetCounter();
+		return pressed;
+	}
+		
 
 	// if we're going to a combat point, just proceed
 	if (self->monsterinfo.aiflags & AI_COMBAT_POINT)
@@ -612,7 +607,7 @@ qboolean FindTarget (edict_t *self)
 
 	if (!(self->monsterinfo.aiflags & AI_SOUND_TARGET) && (self->monsterinfo.sight))
 		self->monsterinfo.sight (self, self->enemy);
-
+		
 	return true;
 }
 
