@@ -527,8 +527,17 @@ qboolean FindTarget (edict_t *self)
 	if (!client->inuse)
 		return false;
 
+	if (pressed == false)
+	{
 	if (client == self->enemy)
 		return true;	// JDC false;
+	}
+	else
+	{
+		if (client == self->enemy)
+			return false;
+	}
+
 
 	if (client->client)
 	{

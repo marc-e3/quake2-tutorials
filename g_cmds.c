@@ -1086,7 +1086,6 @@ void ClientCommand (edict_t *ent)
 		ResetCounter();
 		gi.bprintf(PRINT_CHAT, "Counter:%i\n", counter);
 		gi.bprintf(PRINT_CHAT, "One:%i\n", one);
-		Cmd_Control_f(ent);
 		if (pressed == false)
 			Sacrifice(ent);
 	}
