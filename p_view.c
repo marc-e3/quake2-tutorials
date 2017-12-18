@@ -22,7 +22,6 @@ SV_CalcRoll
 
 ===============
 */
-
 float SV_CalcRoll (vec3_t angles, vec3_t velocity)
 {
 	float	sign;
@@ -706,9 +705,9 @@ void P_WorldEffects (void)
 
 			if (envirosuit)	// take 1/3 damage with envirosuit
 				T_Damage (current_player, world, world, vec3_origin, current_player->s.origin, vec3_origin, 1*waterlevel, 0, 0, MOD_LAVA);
-			if (current_player->watertype & CONTENTS_SLIME)
+			else
 				T_Damage (current_player, world, world, vec3_origin, current_player->s.origin, vec3_origin, 3*waterlevel, 0, 0, MOD_LAVA);
-			}
+		}
 
 			if (!envirosuit)
 			{	// no damage from slime with envirosuit

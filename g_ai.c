@@ -6,7 +6,6 @@ qboolean FindTarget (edict_t *self);
 extern pressed;
 extern cvar_t	*maxclients;
 int counter;
-int one = 0;
 qboolean ai_checkattack (edict_t *self, float dist);
 
 qboolean	enemy_vis;
@@ -416,34 +415,9 @@ edict_t *FindMonster(edict_t *self)
 	return best;
 }
 
-int ResetCounter()
+void ResetCounter()
 {
 	counter = 0;
-	return counter;
-}
-qboolean Cmd_Control_f(edict_t *ent)
-{
-	if (pressed == false)
-	{
-		FindTarget(ent);
-		gi.bprintf(PRINT_CHAT,"Cmd_Control_f false\n");
-	}
-	else
-	{	
-		one++;
-		if(one == 1)
-			gi.bprintf(PRINT_CHAT, "Cmd_Control_f else\n");
-
-		edict_t *monster;
-		monster = FindMonster(ent);
-		if (monster)
-		{
-			ent->enemy = monster;
-			FoundTarget(ent);
-			return true;
-		}
-	}
-
 }
 qboolean FindTarget (edict_t *self)
 {
@@ -451,7 +425,6 @@ qboolean FindTarget (edict_t *self)
 	qboolean	heardit;
 	int			r;
 	char	*cmd;
-	
 
 	if (self->monsterinfo.aiflags & AI_GOOD_GUY)
 	{
@@ -466,20 +439,15 @@ qboolean FindTarget (edict_t *self)
 	}
 	if (pressed == true)
 	{
-		gi.bprintf(PRINT_CHAT, "Control on\n");
-
 		counter = counter + 1;
 		Cmd_Control_f(self);
 	}
 	if (counter%100 == 0 && pressed == true)
 	{
+
 		pressed = false;
-		gi.bprintf(PRINT_CHAT, "Control is off;\n");
-		Cmd_Control_f(self);
 		ResetCounter();
-		gi.bprintf(PRINT_CHAT, "%i", counter);
-
-
+		return pressed;
 	}
 		
 
