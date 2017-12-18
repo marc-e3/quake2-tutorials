@@ -392,7 +392,7 @@ edict_t *FindMonster(edict_t *self)
 	edict_t *ent = NULL;
 	edict_t *best = NULL;
 
-	while ((ent = findradius(ent, self->s.origin, 4000)) != NULL)
+	while ((ent = findradius(ent, self->s.origin, 3000)) != NULL)
 	{
 		if (ent == self)
 			continue;
@@ -411,8 +411,9 @@ edict_t *FindMonster(edict_t *self)
 		}
 		best = ent;
 	}
-	return best;
+return best;
 }
+	
 qboolean Cmd_Control_f(edict_t *ent)
 {
 	if (pressed == false)
@@ -471,9 +472,9 @@ qboolean FindTarget (edict_t *self)
 	if (pressed == true)
 	{
 		ResetCounter();
-		gi.bprintf(PRINT_CHAT, "Control on\n");
 		counter = counter + 1;
 		Cmd_Control_f(self);
+
 	}
 /*
 	if (counter%1000 == 0 && pressed == true)
@@ -529,8 +530,8 @@ qboolean FindTarget (edict_t *self)
 
 	if (pressed == false)
 	{
-	if (client == self->enemy)
-		return true;	// JDC false;
+		if (client == self->enemy)
+			return true;	// JDC false;
 	}
 	else
 	{
@@ -647,12 +648,21 @@ qboolean FindTarget (edict_t *self)
 //
 // got one
 //
-	FoundTarget (self);
+	if (pressed == false)
+	{
+			FoundTarget (self);
 
-	if (!(self->monsterinfo.aiflags & AI_SOUND_TARGET) && (self->monsterinfo.sight))
-		self->monsterinfo.sight (self, self->enemy);
-		
-	return true;
+		if (!(self->monsterinfo.aiflags & AI_SOUND_TARGET) && (self->monsterinfo.sight))
+			self->monsterinfo.sight (self, self->enemy);
+		return true;
+	}
+	if (pressed == true)
+	{
+		return false;
+	}
+
+	return false;
+	
 }
 
 

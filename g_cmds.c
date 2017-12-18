@@ -764,9 +764,7 @@ void Cmd_Wave_f (edict_t *ent)
 }
 void Cmd_Pull_f(edict_t *ent)
 {
-	vec3_t start;
-	vec3_t forward;
-	vec3_t end;
+	vec3_t start, forward, end;
 	trace_t tr;
 	if (lust != 0)
 	{
@@ -787,9 +785,7 @@ void Cmd_Pull_f(edict_t *ent)
 
 void Cmd_Push_f(edict_t *ent)
 {
-	vec3_t start;
-	vec3_t forward;
-	vec3_t end;
+	vec3_t start, forward, end;
 	trace_t tr;
 	if (lust != 0)
 	{
@@ -983,7 +979,8 @@ ClientCommand
 void ClientCommand (edict_t *ent)
 {
 	char	*cmd;
-
+	gclient_t *client;
+	client = ent;
 	if (!ent->client)
 		return;		// not fully in game yet
 
@@ -1072,14 +1069,14 @@ void ClientCommand (edict_t *ent)
 		Cmd_Invincible_f(ent);
 	else if (Q_stricmp(cmd, "power") == 0)
 		Cmd_Power_f(ent);
-	else if (Q_stricmp(cmd, "control") == 0 && pressed == false)
+	else if (Q_stricmp(cmd, "control") == 0 && pressed == false && ent->health > 200)
 	{
 		pressed = true;
 		gi.bprintf(PRINT_CHAT, "Control button pressed on\n");
 		if(pressed == true)
 			Sacrifice(ent);
 	}
-	else if (Q_stricmp(cmd, "control") == 0 && pressed == true)
+	else if ((Q_stricmp(cmd, "control") == 0 && pressed == true) || (ent->health <= 200))
 	{
 		pressed = false;
 		gi.bprintf(PRINT_CHAT, "Control button pressed off\n");

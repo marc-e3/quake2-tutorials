@@ -129,7 +129,7 @@ void ThrowGib(edict_t *self, char *gibname, int damage, int type)
 	vec3_t	size;
 	float	vscale;
 
-	self->health = self->health + 20;
+	self->health = self->health + 30;
 	
 	for (int i = 0; i <= 3;i++) 
 	{
