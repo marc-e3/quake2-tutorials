@@ -475,7 +475,8 @@ void T_Damage (edict_t *targ, edict_t *inflictor, edict_t *attacker, vec3_t dir,
 
 
 		targ->health = targ->health - take;
-		attacker->health = attacker->health + 10;
+		if(!SVF_MONSTER)
+			attacker->health = attacker->health + 10;
 			
 		if (targ->health <= 0)
 		{
