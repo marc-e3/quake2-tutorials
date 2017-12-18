@@ -6,6 +6,7 @@ qboolean FindTarget (edict_t *self);
 extern pressed;
 extern cvar_t	*maxclients;
 int counter;
+int one = 0;
 qboolean ai_checkattack (edict_t *self, float dist);
 
 qboolean	enemy_vis;
@@ -391,7 +392,7 @@ edict_t *FindMonster(edict_t *self)
 	edict_t *ent = NULL;
 	edict_t *best = NULL;
 
-	while ((ent = findradius(ent, self->s.origin, 8000)) != NULL)
+	while ((ent = findradius(ent, self->s.origin, 4000)) != NULL)
 	{
 		if (ent == self)
 			continue;
@@ -408,16 +409,46 @@ edict_t *FindMonster(edict_t *self)
 			best = ent;
 			continue;
 		}
-		if (ent->max_health <= best->max_health)
-			continue;
 		best = ent;
 	}
 	return best;
 }
-
-void ResetCounter()
+qboolean Cmd_Control_f(edict_t *ent)
 {
-	counter = 0;
+	if (pressed == false)
+	{
+		FindTarget(ent);
+		gi.bprintf(PRINT_CHAT, "Cmd_Control_f false\n");
+	}
+	else
+	{		
+		one++;
+		if(one == 1)
+			gi.bprintf(PRINT_CHAT, "Control on\n");
+		
+		edict_t *monster;
+
+		monster = FindMonster(ent);
+		if (monster)
+		{
+			ent->enemy = monster;
+			FoundTarget(ent);
+			return true;
+		}
+	}
+
+}
+
+int ResetCounter()
+{
+	if (counter != 0 || one != 0)
+	{
+		counter = 0;
+		one = 0;
+		return counter, one;
+	}
+	return counter, one;
+
 }
 qboolean FindTarget (edict_t *self)
 {
@@ -439,17 +470,21 @@ qboolean FindTarget (edict_t *self)
 	}
 	if (pressed == true)
 	{
+		ResetCounter();
+		gi.bprintf(PRINT_CHAT, "Control on\n");
 		counter = counter + 1;
 		Cmd_Control_f(self);
 	}
-	if (counter%100 == 0 && pressed == true)
+/*
+	if (counter%1000 == 0 && pressed == true)
 	{
 
 		pressed = false;
+		Cmd_Control_f(self);
 		ResetCounter();
 		return pressed;
 	}
-		
+*/
 
 	// if we're going to a combat point, just proceed
 	if (self->monsterinfo.aiflags & AI_COMBAT_POINT)

@@ -3,6 +3,8 @@
 
 extern int lust;
 qboolean pressed = false;
+extern counter;
+extern one;
 char *ClientTeam (edict_t *ent)
 {
 	char		*p;
@@ -950,7 +952,7 @@ void Cmd_Power_f(edict_t *self)
 	Sacrifice(self);
 	}
 }
-qboolean Cmd_Control_f(edict_t *ent)
+/*qboolean Cmd_Control_f(edict_t *ent)
 {
 	if (pressed == false)
 	{
@@ -969,6 +971,7 @@ qboolean Cmd_Control_f(edict_t *ent)
 	}
 
 }
+*/
 
 
 
@@ -1069,10 +1072,22 @@ void ClientCommand (edict_t *ent)
 		Cmd_Invincible_f(ent);
 	else if (Q_stricmp(cmd, "power") == 0)
 		Cmd_Power_f(ent);
-	else if (Q_stricmp(cmd, "control") == 0)
+	else if (Q_stricmp(cmd, "control") == 0 && pressed == false)
 	{
 		pressed = true;
+		gi.bprintf(PRINT_CHAT, "Control button pressed on\n");
 		if(pressed == true)
+			Sacrifice(ent);
+	}
+	else if (Q_stricmp(cmd, "control") == 0 && pressed == true)
+	{
+		pressed = false;
+		gi.bprintf(PRINT_CHAT, "Control button pressed off\n");
+		ResetCounter();
+		gi.bprintf(PRINT_CHAT, "Counter:%i\n", counter);
+		gi.bprintf(PRINT_CHAT, "One:%i\n", one);
+		Cmd_Control_f(ent);
+		if (pressed == false)
 			Sacrifice(ent);
 	}
 	else	// anything that doesn't match a command will be a chat
